@@ -1,9 +1,10 @@
 import { Fragment } from "react";
 import React, { useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-// import { BellIcon } from "@heroicons/react/24/outline";
 import { XIcon } from "@heroicons/react/solid";
 import { Logo } from "../image/Image";
+import { removeSession } from "../utils/LocalStorage";
+import { useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +12,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate()
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -86,7 +88,12 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a href="#" className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}>
+                          <a onClick={
+                            () => {
+                              removeSession()
+                              navigate('/login')
+                            }
+                          } className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}>
                             Sign out
                           </a>
                         )}

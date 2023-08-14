@@ -16,11 +16,11 @@ function LoginForm() {
     httpClient
       .post("/auth/login", e)
       .then((res) => {
+        saveToken(res.data.data)
         message.destroy();
         message.info({
           content: "success login",
         });
-        saveToken(res.data.data)
         navigate("/");
       })
       .catch((err) => {

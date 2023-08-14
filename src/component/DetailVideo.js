@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import Navbar from "./Navbar";
 import Comment from "./Comment";
+import { newHttpClientAuth } from "../utils/HttpClientAxios";
 
 const VideoDetail = () => {
   // get url params
   const { id } = useParams();
   const [videos, setVideos] = useState([]);
 
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000/v1/api",
-    headers: {
-      Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2FjaXB0YUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwMDMyMjh9.uF9bCAcoZYH1Ja3SU_NkoiHkIcX5DfODqeMhsPqtmOU",
-    },
-  });
-
   useEffect(() => {
-    axiosInstance.get(`/videos/${id}/products`).then((response) => {
+    const httpClient = newHttpClientAuth();
+    httpClient.get(`/videos/${id}/products`).then((response) => {
       setVideos(response.data.data);
     });
   }, []);
@@ -28,7 +22,6 @@ const VideoDetail = () => {
       <Comment />
       <div className="relative h-screen">
         <div className="w-4/5 bg-gray-100 p-8">
-          {/* Video */}
           <div className="mb-4">
             <iframe
               width="100%"

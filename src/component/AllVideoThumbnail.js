@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
-import {getToken} from "../utils/LocalStorage"
-import { message} from "antd";
+import { getToken } from "../utils/LocalStorage";
+import { message } from "antd";
+import { newHttpClientAuth } from "../utils/HttpClientAxios";
 
 const ListVideo = () => {
-  const navigate = useNavigate()
-  
-  if (!getToken()){
+  const navigate = useNavigate();
+
+  if (!getToken()) {
     message.destroy();
     message.warning({
-      content: "you must login first"
-    })
-    navigate("/login")
+      content: "you must login first",
+    });
+    navigate("/login");
   }
-  
+
   const [videos, setVideos] = useState([]);
-  const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000/v1/api",
-    headers: {
-      Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pc2FjaXB0YUBnbWFpbC5jb20iLCJpYXQiOjE2OTIwMDMyMjh9.uF9bCAcoZYH1Ja3SU_NkoiHkIcX5DfODqeMhsPqtmOU",
-    },
-  });
 
   const opts = {
     width: "300",
@@ -30,18 +24,12 @@ const ListVideo = () => {
   };
 
   useEffect(() => {
-    axiosInstance.get("/videos").then((response) => {
+    const httpClient = newHttpClientAuth();
+    httpClient.get("/videos").then((response) => {
       setVideos(response.data.data);
     });
   }, []);
 
-  // const [thumbnailUrl, setThumbnailUrl] = useState("");
-
-  // const handleReady = (event) => {
-  //   // Dapatkan URL thumbnail dari data video
-  //   const thumbnail = event.target.getVideoData().thumbnailUrl;
-  //   setThumbnailUrl(thumbnail);
-  // };
   return (
     <div>
       <Navbar />
