@@ -1,9 +1,10 @@
 // import logo from "./logo.svg";
 import React, { useEffect, useState } from "react";
-import "./App.css";
+// import "./App.css";
 import AllComponent from "./component/AllComponent";
 import Axios from "axios";
 
+console.log(process.env.REACT_APP_BACKEND, 444);
 function App() {
   const [data, setData] = useState();
   // const getData = async () => {
@@ -20,7 +21,7 @@ function App() {
   //   getData();
   // }, []);
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className=" w-full h-screen">
       {/* <div>{data}</div> */}
       <AllComponent />
       {/* <header className="App-header">

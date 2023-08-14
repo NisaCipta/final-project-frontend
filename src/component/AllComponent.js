@@ -1,8 +1,9 @@
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
-import Navbar from "./Navbar";
 import MyComponent from "./Antd";
-import ListVideo from "./Home";
+import ListVideo from "./AllVideoThumbnail";
+import VideoDetail from "./DetailVideo";
+import Comment from "./Comment";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function AllComponent() {
@@ -11,9 +12,10 @@ function AllComponent() {
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<RegisterForm />} />
-        <Route path="/home" element={<Navbar />} />
         <Route path="/antd" element={<MyComponent />} />
-        <Route path="/video" element={<ListVideo />} />
+        <Route path="/home" element={<ListVideo />} />
+        <Route path="/video/:id" element={<VideoDetail />} />
+        <Route path="/comment" element={<Comment />} />
       </Routes>
     </Router>
   );

@@ -31,8 +31,8 @@ function LoginForm() {
   };
 
   return (
-    <div>
-      <div className="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div className="">
+      <div className=" w-full h-screen min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 flex rounded-2xl shadow-xl max-w-3xl p-5 items-center">
           <div className="md:block hidden w-1/2">
             <img src={Login} className="rounded-2xl"></img>
