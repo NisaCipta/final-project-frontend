@@ -21,7 +21,7 @@ function LoginForm() {
           content: "success login",
         });
         saveToken(res.data.data)
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         message.destroy();

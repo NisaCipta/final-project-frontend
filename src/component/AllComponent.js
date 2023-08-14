@@ -10,9 +10,9 @@ function AllComponent() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<RegisterForm />} />
+        <Route path="/register" element={<RegisterForm />} />
         <Route path="/antd" element={<MyComponent />} />
-        <Route path="/home" element={<ListVideo />} />
+        <Route path="/" element={<ListVideo />} />
         <Route path="/video/:id" element={<VideoDetail />} />
       </Routes>
     </Router>

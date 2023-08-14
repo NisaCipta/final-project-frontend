@@ -1,11 +1,15 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../image/Image";
 import { Button, message, Input, Form } from "antd";
+import {httpClient} from "../utils/HttpClientAxios"
+import {removeSession} from "../utils/LocalStorage"
 
 function RegisterForm() {
   const navigate = useNavigate();
+  
+  //clear session every time hit register page
+  removeSession();
 
   const handleFailed = (e) => {
     console.log(e.errorFields[0].errors);
@@ -13,8 +17,8 @@ function RegisterForm() {
   };
 
   const handleSubmit = (e) => {
-    axios
-      .post("http://localhost:5000/v1/api/auth/register", e)
+    httpClient
+      .post("/auth/register", e)
       .then((res) => {
         message.destroy();
         message.info({
@@ -106,7 +110,7 @@ function RegisterForm() {
           </div>
 
           <div className="md:block hidden w-1/2">
-            <img src={Login} className="rounded-2xl"></img>
+            <img src={Login} className="rounded-2xl" alt="logo login"></img>
           </div>
         </div>
       </div>

@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
+import {getToken} from "../utils/LocalStorage"
+import { message} from "antd";
 
 const ListVideo = () => {
+  const navigate = useNavigate()
+  
+  if (!getToken()){
+    message.destroy();
+    message.warning({
+      content: "you must login first"
+    })
+    navigate("/login")
+  }
+  
   const [videos, setVideos] = useState([]);
-
   const axiosInstance = axios.create({
     baseURL: "http://localhost:5000/v1/api",
     headers: {
