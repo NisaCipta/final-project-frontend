@@ -2,33 +2,38 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../image/Image";
-import { Button, message, Input, Alert, Form } from "antd";
+import { Button, message, Input, Form } from "antd";
 
 function RegisterForm() {
   const navigate = useNavigate();
 
   const handleFailed = (e) => {
-    if (e == "") {
-      message.info("Email already exists, please login");
-    } else {
-      message.info("Please fill the form");
-    }
+    console.log(e.errorFields[0].errors);
+    message.error(e.errorFields[0].errors);
   };
 
   const handleSubmit = (e) => {
     axios
       .post("http://localhost:5000/v1/api/auth/register", e)
       .then((res) => {
-        message.info("Success Register");
-        console.log(res);
+        message.destroy();
+        message.info({
+          content: "success register",
+        });
+
         navigate("/login");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        message.destroy();
+        message.error({
+          content: err.response.data.message,
+        });
+        console.log(err);
+      });
   };
 
   return (
     <div>
-      {/* <Alert message="Error" type="error" showIcon closable /> */}
       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 flex rounded-2xl shadow-xl max-w-3xl p-5 items-center">
           <div className="md:w-1/2 px-16">

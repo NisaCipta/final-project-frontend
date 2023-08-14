@@ -1,7 +1,8 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../image/Image";
 import { Button, message, Input, Form } from "antd";
+import {httpClient} from "../utils/HttpClientAxios"
+import {saveToken} from "../utils/LocalStorage"
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -12,13 +13,14 @@ function LoginForm() {
   };
 
   const handleSubmit = (e) => {
-    axios
-      .post("http://localhost:5000/v1/api/auth/login", e)
+    httpClient
+      .post("/auth/login", e)
       .then((res) => {
         message.destroy();
         message.info({
           content: "success login",
         });
+        saveToken(res.data.data)
         navigate("/home");
       })
       .catch((err) => {
