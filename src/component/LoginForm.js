@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Login } from "../image/Image";
 import { Button, message, Input, Form } from "antd";
-import {httpClient} from "../utils/HttpClientAxios"
-import {saveToken} from "../utils/LocalStorage"
+import { httpClient } from "../utils/HttpClientAxios";
+import { saveToken } from "../utils/LocalStorage";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function LoginForm() {
     httpClient
       .post("/auth/login", e)
       .then((res) => {
-        saveToken(res.data.data)
+        saveToken(res.data.data);
         message.destroy();
         message.info({
           content: "success login",
@@ -82,23 +82,16 @@ function LoginForm() {
               </Form.Item>
             </Form>
 
-            <div className="mt-10 grid grid-cols-3 items-center text-gray-400">
+            <div className="mt-1 grid grid-cols-3 items-center text-gray-400">
               <hr className="border-gray-400" />
               <p className="text-center text-sm">OR</p>
               <hr className="border-gray-400" />
             </div>
 
-            <button className="bg-white border py-2 w-full rounded-xl mt-5 hover:scale-60 duration-300">
-              <i className="fa-brands fa-google w-6 justify-center items-center "></i>
-              Login with Google
-            </button>
-
-            <hr className="my-5 border-gray-400" />
-
             <div className="text-xs flex justify-between items-center">
               <p>Don't have account?</p>
               <button className="py-2 px-5 bg-white border rounded-xl hover:scale-100 duration-300">
-                <a href="/">Register</a>
+                <a href="/register">Register</a>
               </button>
             </div>
           </div>

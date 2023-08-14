@@ -7,15 +7,6 @@ import { newHttpClientAuth } from "../utils/HttpClientAxios";
 
 const ListVideo = () => {
   const navigate = useNavigate();
-
-  if (!getToken()) {
-    message.destroy();
-    message.warning({
-      content: "you must login first",
-    });
-    navigate("/login");
-  }
-
   const [videos, setVideos] = useState([]);
 
   const opts = {
@@ -24,6 +15,14 @@ const ListVideo = () => {
   };
 
   useEffect(() => {
+    if (!getToken() || getToken() == null) {
+      message.destroy();
+      message.warning({
+        content: "you must login first",
+      });
+      navigate("/login");
+      return;
+    }
     const httpClient = newHttpClientAuth();
     httpClient.get("/videos").then((response) => {
       setVideos(response.data.data);
