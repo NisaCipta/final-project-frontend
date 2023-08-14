@@ -9,9 +9,11 @@ export const httpClient = axios.create({
 
 
 // http client use auth/token
-export const httpClientAuth = axios.create({
-  baseURL: `${backendURL}/v1/api`,
-  headers: {
-    Authorization: getToken(),
-  },
-});
+export const newHttpClientAuth = ()=>{
+    return axios.create({
+        baseURL: `${backendURL}/v1/api`,
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+}
