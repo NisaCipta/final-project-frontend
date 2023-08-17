@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 // import "./App.css";
 import AllComponent from "./component/AllComponent";
-import Axios from "axios";
+// import Axios from "axios";
 
-console.log(process.env.REACT_APP_BACKEND, 444);
+// console.log(process.env.REACT_APP_BACKEND, 444);
 function App() {
   const [data, setData] = useState();
   // const getData = async () => {

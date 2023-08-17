@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Login } from "../image/Image";
 import { Button, message, Input, Form } from "antd";
 import { httpClient } from "../utils/HttpClientAxios";
-import { saveToken } from "../utils/LocalStorage";
+import { saveSession } from "../utils/LocalStorage";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ function LoginForm() {
     httpClient
       .post("/auth/login", e)
       .then((res) => {
-        saveToken(res.data.data);
+        saveSession(res.data.data.token, res.data.data.user);
         message.destroy();
         message.info({
           content: "success login",
@@ -26,14 +26,14 @@ function LoginForm() {
       .catch((err) => {
         message.destroy();
         message.error({
-          content: err.response.data.message,
+          content: "failed login",
         });
         console.log(err);
       });
   };
 
   return (
-    <div className="">
+    <div>
       <div className=" w-full h-screen min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 flex rounded-2xl shadow-xl max-w-3xl p-5 items-center">
           <div className="md:block hidden w-1/2">

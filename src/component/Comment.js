@@ -1,43 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { SendOutlined } from "@ant-design/icons";
+import { newHttpClientAuth } from "../utils/HttpClientAxios";
+import { Button, message, Input, Form } from "antd";
+import { getUsername } from "../utils/LocalStorage";
 
-const Comment = () => {
-  const [comments, setComments] = useState([]);
-  const [newComment, setNewComment] = useState("");
+const Comment = ({ comment, videoId }) => {
+  const listRef = useRef(null);
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTop = listRef.current.scrollHeight;
+    }
+  });
 
-  // ... Setup WebSocket connection and useEffect as shown in the previous examples ...
-
-  const handleCommentChange = (event) => {
-    setNewComment(event.target.value);
+  const handleCommentFailed = (e) => {
+    message.error(e.errorFields[0].errors);
   };
 
-  const handleCommentSubmit = () => {
-    if (newComment) {
-      const commentObj = { text: newComment };
-      //   ws.send(JSON.stringify(commentObj));
-      setNewComment("");
-    }
+  const handleCommentSubmit = (e) => {
+    e.username = getUsername();
+    e.video_id = videoId;
+    const httpClient = newHttpClientAuth();
+    httpClient
+      .post("/comments", e)
+      .then((response) => {
+        message.destroy();
+        message.info({
+          content: response.data?.message,
+        });
+        window.location.reload();
+      })
+      .catch((err) => {
+        message.destroy();
+        message.error({
+          content: "please fill the column comment",
+        });
+        console.log(err, 343434);
+      });
   };
 
   return (
-    <div className="relative h-screen">
-      <div className="fixed bottom-4 right-4 bg-gray-200 p-4">
-        {/* Comment section */}
-        <div className="mb-4 flex">
-          <input type="text" placeholder="Write a comment" value={newComment} onChange={handleCommentChange} className="w-full px-2 py-1 border rounded" />
-          <button onClick={handleCommentSubmit} className="bg-blue-500 text-white px-2 py-1 rounded ml-2 flex items-center">
-            <SendOutlined className="mr-1" />
-          </button>
-        </div>
-        <div className="overflow-y-auto h-[calc(100vh-160px)]">
-          {comments.map((comment, index) => (
+    <>
+      <div className="bg-gray-100 px-5 flex flex-col justify-end">
+        <div ref={listRef} className="max-h-screen overflow-y-auto" style={{ overflow: 'hidden' }}>
+          {comment.map((comment, index) => (
             <div key={index} className="bg-white p-2 mb-2 shadow">
-              {comment.text}
+              {comment.comment}
             </div>
           ))}
         </div>
+        <div className="mb-4 flex">
+          <Form onFinishFailed={handleCommentFailed} onFinish={handleCommentSubmit}>
+            <div className="flex items-center">
+              <Form.Item
+                name="comment"
+                className="w-full"
+                rules={[
+                  {
+                    type: "text",
+                    message: "The input is not valid E-mail!",
+                  },
+                ]}
+              >
+                <Input placeholder="Write a comment" />
+              </Form.Item>
+
+              <Form.Item>
+                <Button htmlType="submit" className="bg-blue-500 text-white px-2 py-1 rounded ml-2 flex items-center">
+                  <SendOutlined className="mr-1" />
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

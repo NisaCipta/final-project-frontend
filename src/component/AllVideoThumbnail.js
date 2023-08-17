@@ -9,11 +9,6 @@ const ListVideo = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
 
-  const opts = {
-    width: "300",
-    height: "300",
-  };
-
   useEffect(() => {
     if (!getToken() || getToken() == null) {
       message.destroy();
@@ -39,7 +34,7 @@ const ListVideo = () => {
             <Link to={`/video/${video._id}`} className="block">
               <div className="bg-[#04413C] w-64 py-1/2 h-96 mx-auto rounded-lg shadow-md opacity-400">
                 <div className="flex justify-between items-center h-full">
-                  <img className="" src={`https://img.youtube.com/vi/${video.video_url}/maxresdefault.jpg`} opts={opts} />
+                  <img className="" src={`https://img.youtube.com/vi/${video.video_url}/maxresdefault.jpg`} />
                 </div>
               </div>
               <h3 className="absolute bottom-0 left-0 mb-2 ml-2 text-white text-sm font-semibold">{video.title}</h3>
