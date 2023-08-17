@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/solid";
 import { Logo } from "../image/Image";
+
 import { removeSession } from "../utils/LocalStorage";
 import { useNavigate } from "react-router-dom";
 
@@ -10,9 +11,18 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Navbar() {
+export default function Navbar({ onValueChange, onDataChange }) {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate()
+
+  const [inputValue, setInputValue] = useState("");
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    onDataChange(newValue);
+    setInputValue(newValue);
+    onValueChange(newValue);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -41,7 +51,7 @@ export default function Navbar() {
                       </svg>
                     </div>
 
-                    <input className="peer h-full w-full outline-none text-sm text-gray-700 " type="text" id="search" placeholder="Search something.." />
+                    <input value={inputValue} onChange={handleChange} className="peer h-full w-full outline-none text-sm text-gray-700 " type="text" id="search" placeholder="Search something.." />
                   </div>
                 </div>
               </div>
@@ -88,12 +98,13 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a onClick={
-                            () => {
-                              removeSession()
-                              navigate('/login')
-                            }
-                          } className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}>
+                          <a
+                            onClick={() => {
+                              removeSession();
+                              navigate("/login");
+                            }}
+                            className={classNames(active ? "bg-gray-100" : "", "block px-4 py-2 text-sm text-gray-700")}
+                          >
                             Sign out
                           </a>
                         )}

@@ -9,6 +9,19 @@ const ListVideo = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
 
+  const [childValue, setChildValue] = useState("");
+
+  const handleChildValueChange = (value) => {
+    setChildValue(value);
+  };
+
+  function updateVideoSearch(childValue) {
+    const httpClient = newHttpClientAuth();
+    httpClient.get(`/videos?title=${childValue}`).then((response) => {
+      setVideos(response.data.data);
+    });
+  }
+
   useEffect(() => {
     if (!getToken() || getToken() == null) {
       message.destroy();
@@ -18,15 +31,12 @@ const ListVideo = () => {
       navigate("/login");
       return;
     }
-    const httpClient = newHttpClientAuth();
-    httpClient.get("/videos").then((response) => {
-      setVideos(response.data.data);
-    });
+    updateVideoSearch(childValue);
   }, []);
 
   return (
     <div>
-      <Navbar />
+      <Navbar onValueChange={handleChildValueChange} onDataChange={updateVideoSearch} />
       <h2>List of Videos</h2>
       <div className="flex flex-wrap justify-center gap-5 mt-5">
         {videos.map((video) => (
