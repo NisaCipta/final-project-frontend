@@ -10,9 +10,15 @@ const VideoDetail = () => {
   const [videos, setVideos] = useState([]);
   const [comments, setComment] = useState([]);
   const [products, setProduct] = useState([]);
+  const httpClient = newHttpClientAuth();
+
+  function getComment(id) {
+    httpClient.get(`/videos/${id}/comments`).then((response) => {
+      setComment(response.data.data.comments);
+    });
+  }
 
   useEffect(() => {
-    const httpClient = newHttpClientAuth();
     httpClient.get(`/videos/${id}/products`).then((response) => {
       setProduct(response.data.data.products);
     });
@@ -47,7 +53,7 @@ const VideoDetail = () => {
             </div>
           </div>
         </div>
-        <Comment comment={comments} videoId={id} />
+        <Comment getComment={getComment} comment={comments} videoId={id} />
       </div>
     </>
   );

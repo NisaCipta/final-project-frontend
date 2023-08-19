@@ -4,8 +4,10 @@ import { newHttpClientAuth } from "../utils/HttpClientAxios";
 import { Button, message, Input, Form } from "antd";
 import { getUsername } from "../utils/LocalStorage";
 
-const Comment = ({ comment, videoId }) => {
+const Comment = ({ comment, videoId, getComment }) => {
+  const [form] = Form.useForm();
   const listRef = useRef(null);
+
   useEffect(() => {
     if (listRef.current) {
       listRef.current.scrollTop = listRef.current.scrollHeight;
@@ -14,6 +16,11 @@ const Comment = ({ comment, videoId }) => {
 
   const handleCommentFailed = (e) => {
     message.error(e.errorFields[0].errors);
+  };
+
+  const handleChange = () => {
+    form.resetFields();
+    getComment(videoId);
   };
 
   const handleCommentSubmit = (e) => {
@@ -27,7 +34,7 @@ const Comment = ({ comment, videoId }) => {
         message.info({
           content: response.data?.message,
         });
-        window.location.reload();
+        handleChange();
       })
       .catch((err) => {
         message.destroy();
@@ -41,7 +48,7 @@ const Comment = ({ comment, videoId }) => {
   return (
     <>
       <div className="bg-gray-100 px-5 flex flex-col justify-end">
-        <div ref={listRef} className="max-h-screen overflow-y-auto" style={{ overflow: 'hidden' }}>
+        <div ref={listRef} className="max-h-screen overflow-y-auto" style={{ overflow: "hidden" }}>
           {comment.map((comment, index) => (
             <div key={index} className="bg-white p-2 mb-2 shadow">
               {comment.comment}
@@ -49,7 +56,7 @@ const Comment = ({ comment, videoId }) => {
           ))}
         </div>
         <div className="mb-4 flex">
-          <Form onFinishFailed={handleCommentFailed} onFinish={handleCommentSubmit}>
+          <Form form={form} onFinishFailed={handleCommentFailed} onFinish={handleCommentSubmit}>
             <div className="flex items-center">
               <Form.Item
                 name="comment"
